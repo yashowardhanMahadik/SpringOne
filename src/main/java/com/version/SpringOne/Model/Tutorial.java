@@ -26,7 +26,7 @@ public class Tutorial {
     return "Tutorial{" +
         "Id='" + Id + '\'' +
         ", title='" + title + '\'' +
-        ", description='" + description + '\'' +
+        ", description ='" + description + '\'' +
         '}';
   }
 
