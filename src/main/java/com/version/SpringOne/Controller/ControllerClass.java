@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ControllerClass {
 
   @Autowired
-  DatabaseRepo db;
+    DatabaseRepo db;
 
   @PostMapping("/create")
   public ResponseEntity<Tutorial> createit(@RequestBody Tutorial tut)
@@ -37,8 +37,7 @@ public class ControllerClass {
   public ResponseEntity<List<Tutorial>> getAll()
   {
     try{
-      List<Tutorial> li = new ArrayList<>();
-      db.findAll().forEach(li::add);
+      List<Tutorial> li = new ArrayList<>(db.findAll());
 
       if(li.isEmpty())
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
