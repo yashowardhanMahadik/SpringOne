@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Tutorial {
 
   @Id
-  private String Id;
+  private String id;
   private String title;
   private String description;
 
@@ -24,18 +24,18 @@ public class Tutorial {
   @Override
   public String toString() {
     return "Tutorial{" +
-        "Id='" + Id + '\'' +
+        "Id='" + id + '\'' +
         ", title='" + title + '\'' +
         ", description ='" + description + '\'' +
         '}';
   }
 
   public String getId() {
-    return Id;
+    return id;
   }
 
   public void setId(String id) {
-    Id = id;
+    this.id = id;
   }
 
   public String getTitle() {
@@ -53,11 +53,5 @@ public class Tutorial {
   public void setDescription(String description) {
     this.description = description;
   }
-
-
-
-
-
-
 
 }
