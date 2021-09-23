@@ -3,18 +3,18 @@ package com.version.SpringOne.Controller;
 import com.version.SpringOne.Model.JwtRequest;
 import com.version.SpringOne.Model.JwtResponse;
 import com.version.SpringOne.Model.Tutorial;
+import com.version.SpringOne.Model.UserData;
 import com.version.SpringOne.Repository.DatabaseRepo;
 
 import java.util.*;
 
+import com.version.SpringOne.Repository.UserRepo;
 import com.version.SpringOne.service.UserService;
 import com.version.SpringOne.utility.JWTUtility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,6 +35,8 @@ public class ControllerClass {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepo userRepo;
 
     @PostMapping("/create")
     public ResponseEntity<Tutorial> createit(@RequestBody Tutorial tut) {
@@ -133,5 +135,15 @@ public class ControllerClass {
                 jwtUtility.generateToken(userDetails);
 
         return  new JwtResponse(token);
+    }
+
+    @PostMapping("/createUser")
+    public UserData postUser(@RequestBody UserData user){
+            UserData newuser = new UserData();
+            newuser.setUserId(user.getUserId());
+            newuser.setEmail(user.getEmail());
+            newuser.setName(user.getName());
+            userRepo.save(newuser);
+        return newuser;
     }
 }
