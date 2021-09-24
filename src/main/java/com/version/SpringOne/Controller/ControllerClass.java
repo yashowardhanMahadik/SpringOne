@@ -140,10 +140,11 @@ public class ControllerClass {
     @PostMapping("/createUser")
     public UserData postUser(@RequestBody UserData user){
             UserData newuser = new UserData();
-            newuser.setUserId(user.getUserId());
             newuser.setEmail(user.getEmail());
             newuser.setName(user.getName());
-            userRepo.save(newuser);
+            newuser.setPassword(user.getPassword());
+
+            newuser = userRepo.save(newuser);
         return newuser;
     }
 }
