@@ -15,6 +15,14 @@ public class UserData {
     @Id
     String userId;
     String name;
-    String password;
     String email;
+    String password;
+    String role;
+
+    public UserData(String name, String password, String email, String role) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
 }

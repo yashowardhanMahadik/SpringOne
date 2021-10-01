@@ -8,4 +8,7 @@ import java.util.Optional;
 public interface UserRepo extends MongoRepository<UserData,String> {
     @Query("{ id : ?0}")
     Optional<UserData> findUser(String id);
+
+    @Query("{ 'name' : ?0}")
+    Optional<UserData> findUserByName(String name);
 }

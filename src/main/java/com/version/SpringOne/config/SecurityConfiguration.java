@@ -10,10 +10,16 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.Collection;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -51,6 +57,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
                 "/swagger-ui.html",
                 "/webjars/**")
                 .permitAll()
+                .antMatchers("/api/users").access("hasRole('user')")
+                .antMatchers("/api/admin").access("hasRole('admin')")
+                .antMatchers("/api/bothofthem").hasAnyAuthority("admin","user","special")
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -62,5 +71,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
+    }
+
+    //removing the Role_ addition
+    @Bean
+    GrantedAuthorityDefaults grantedAuthorityDefaults() {
+        return new GrantedAuthorityDefaults(""); // Remove the ROLE_ prefix
     }
 }

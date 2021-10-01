@@ -35,8 +35,6 @@ public class ControllerClass {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UserService userService;
-    @Autowired
-    private UserRepo userRepo;
 
     @PostMapping("/create")
     public ResponseEntity<Tutorial> createit(@RequestBody Tutorial tut) {
@@ -91,31 +89,32 @@ public class ControllerClass {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "2") int size
     ) {
-            List<Tutorial> tutorials = new ArrayList<Tutorial>();
-            Pageable paging = PageRequest.of(page, size);
+        List<Tutorial> tutorials = new ArrayList<Tutorial>();
+        Pageable paging = PageRequest.of(page, size);
 
-            Page<Tutorial> pageTuts;
-            if (title == null)
-                pageTuts = db.findAll(paging);
-            else
-                pageTuts = null;
+        Page<Tutorial> pageTuts;
+        if (title == null)
+            pageTuts = db.findAll(paging);
+        else
+            pageTuts = null;
 
-            tutorials = pageTuts.getContent();
+        tutorials = pageTuts.getContent();
 
-            Map<String, Object> response = new HashMap<>();
-            response.put("tutorials", tutorials);
-            response.put("currentPage", pageTuts.getNumber());
-            response.put("totalItems", pageTuts.getTotalElements());
-            response.put("totalPages", pageTuts.getTotalPages());
+        Map<String, Object> response = new HashMap<>();
+        response.put("tutorials", tutorials);
+        response.put("currentPage", pageTuts.getNumber());
+        response.put("totalItems", pageTuts.getTotalElements());
+        response.put("totalPages", pageTuts.getTotalPages());
 
-            return response;
+        return response;
 
 //            ArrayList<Integer> alist ;
 //            Collections.copy();
-            //return new ResponseEntity<>(response, HttpStatus.OK);
+        //return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @PostMapping("/authenticate")
-    public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception{
+    public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
 
         try {
             authenticationManager.authenticate(
@@ -133,18 +132,30 @@ public class ControllerClass {
 
         final String token =
                 jwtUtility.generateToken(userDetails);
-
-        return  new JwtResponse(token);
+                //jwtUtility.generateToken();
+        return new JwtResponse(token);
     }
 
     @PostMapping("/createUser")
-    public UserData postUser(@RequestBody UserData user){
-            UserData newuser = new UserData();
-            newuser.setEmail(user.getEmail());
-            newuser.setName(user.getName());
-            newuser.setPassword(user.getPassword());
+    public UserData postUser(@RequestBody UserData user) {
+//        UserData newuser = new UserData();
+//        newuser = userService.createUser(user);
+//        newuser = userRepo.save(newuser);
+        return userService.createUser(user);
+    }
 
-            newuser = userRepo.save(newuser);
-        return newuser;
+    @GetMapping("/admin")
+    public String confidential() {
+        return "Allowed access";
+    }
+
+    @GetMapping("/users")
+    public String userAccess(){
+        return "User can access their own info";
+    }
+
+    @GetMapping("/bothofthem")
+    public String bothuserAccess(){
+        return "User and admin can access their own info";
     }
 }
