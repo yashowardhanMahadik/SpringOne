@@ -158,4 +158,9 @@ public class ControllerClass {
     public String bothuserAccess(){
         return "User and admin can access their own info";
     }
+
+    @GetMapping("/hello")
+    public String sendHello(@RequestParam String str){
+            return str;
+    }
 }
